@@ -1,0 +1,60 @@
+* {
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+body {
+
+}
+
+.container-card {
+    width: 820px;
+    height: 200px;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -410px;
+}
+
+.container-card > div {
+    display: flex;
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.container-card > div div {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: .4s;
+}
+
+.container-card > div .front {
+    background: url("../images/backgroundCard.png") no-repeat;
+}
+
+.container-card > div .back {
+}
+
+.container-card .contentCard.active {
+    border: 1px solid red;
+}
+
+.container-card .contentCard.active .front {
+    transform: rotateY(180deg);
+    z-index: -1;
+}
+
+.container-card .contentCard.active .back {
+    z-index: 1
+}

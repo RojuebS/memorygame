@@ -4,7 +4,6 @@ window.addEvent('domready', () => {
 
 class MemoryGame {
     constructor() {
-        console.log("123");
         this.listImagesCard();
         this.createCardElement();
         this.insertCard();
@@ -12,32 +11,33 @@ class MemoryGame {
 
     listImagesCard() {
         this.cardsImage = [{
-            0: "/static/jogodamemoria/set/1/4.png",
-            1: "/static/jogodamemoria/set/1/40.png",
-            2: "/static/jogodamemoria/set/1/10.png",
-            3: "/static/jogodamemoria/set/1/1.png",
-            4: "/static/jogodamemoria/set/1/4.png",
-            5: "/static/jogodamemoria/set/1/3.png",
-            6: "/static/jogodamemoria/set/1/32.png",
-            7: "/static/jogodamemoria/set/1/51.png",
-            8: "/static/jogodamemoria/set/1/8.png",
-            9: "/static/jogodamemoria/set/1/33.png",
-            10: "/static/jogodamemoria/set/1/53.png",
-            11: "/static/jogodamemoria/set/1/35.png",
-            12: "/static/jogodamemoria/set/1/20.png",
-            13: "/static/jogodamemoria/set/1/15.pn",
-            14: "/static/jogodamemoria/set/1/46.png",
-            15: "/static/jogodamemoria/set/1/47.png",
-            16: "/static/jogodamemoria/set/1/29.png",
-            17: "/static/jogodamemoria/set/1/43.png",
-            18: "/static/jogodamemoria/set/1/5.png",
-            19: "/static/jogodamemoria/set/1/52.png",
-            20: "/static/jogodamemoria/set/1/50.png"
+            0: "images/4.png",
+            1: "images/40.png",
+            2: "images/10.png",
+            3: "images/1.png",
+            4: "images/4.png",
+            5: "images/3.png",
+            6: "images/32.png",
+            7: "images/51.png",
+            8: "images/8.png",
+            9: "images/33.png",
+            10: "images/53.png",
+            11: "images/35.png",
+            12: "images/20.png",
+            13: "images/50.png",
+            14: "images/46.png",
+            15: "images/47.png",
+            16: "images/29.png",
+            17: "images/43.png",
+            18: "images/5.png",
+            19: "images/52.png"
         }];
 
-        console.log(this.cardsImage)
-
         return this.cardsImage;
+    }
+
+    flipCard() {
+
     }
 
     createCardElement() {
@@ -45,16 +45,31 @@ class MemoryGame {
             "class": "container-card"
         });
 
+        let list = this.listImagesCard()[0];
 
+        for( let item in list) {
+            this.contentFrontBackCard = new Element("div", {
+                "class": "contentCard",
+                "events": {
+                    "click": (ev) => {
+                        ev.target.getParent().addClass("active");
+                    }
+                }
+            }).adopt(
+                new Element('div', {
+                    "class": "front",
+                    "id": item
+                }),
 
-
-        this.elementRepeat = new Element('div', {
-                "class": "front"
-            }),
-
-            new Element('div', {
-                "class": "back"
-            })
+                new Element('div', {
+                    "class": "back",
+                    "data-id": item,
+                    "styles": {
+                        "background": "url('"+list[item]+"')"
+                    }
+                })
+            ).inject(this.card)
+        }
 
         return this.card;
     }
