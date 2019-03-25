@@ -2,6 +2,15 @@ window.addEvent('domready', () => {
     new MemoryGame();
 });
 
+Array.prototype.shuffle = function(){
+    for (var i = 0; i < this.length; i++){
+        var a = this[i];
+        var b = Math.floor(Math.random() * this.length);
+        this[i] = this[b];
+        this[b] = a;
+    }
+}
+
 class MemoryGame {
     constructor() {
         this.listImagesCard();
@@ -10,34 +19,57 @@ class MemoryGame {
     }
 
     listImagesCard() {
-        this.cardsImage = [{
-            0: "images/4.png",
-            1: "images/40.png",
-            2: "images/10.png",
-            3: "images/1.png",
-            4: "images/4.png",
-            5: "images/3.png",
-            6: "images/32.png",
-            7: "images/51.png",
-            8: "images/8.png",
-            9: "images/33.png",
-            10: "images/53.png",
-            11: "images/35.png",
-            12: "images/20.png",
-            13: "images/50.png",
-            14: "images/46.png",
-            15: "images/47.png",
-            16: "images/29.png",
-            17: "images/43.png",
-            18: "images/5.png",
-            19: "images/52.png"
-        }];
-
-        return this.cardsImage;
+        this.cardsImage = [
+            "images/4.png",
+            "images/40.png",
+            "images/10.png",
+            "images/1.png",
+            "images/4.png",
+            "images/3.png",
+            "images/32.png",
+            "images/51.png",
+            "images/8.png",
+            "images/33.png",
+            "images/53.png",
+            "images/35.png",
+            "images/20.png",
+            "images/50.png",
+            "images/46.png",
+            "images/47.png",
+            "images/29.png",
+            "images/43.png",
+            "images/5.png",
+            "images/52.png"
+        ];
     }
 
-    flipCard() {
 
+    shuffleCards(array) {
+
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+    }
+
+    flipCard(ev) {
+        ev.target.getParent().addClass("flip");
+        setTimeout( () => {
+            ev.target.getParent().addClass("active");
+        }, 250);
+
+    }
+
+    isValidOptions(ev) {
+        console.log(ev);
     }
 
     createCardElement() {
@@ -45,36 +77,37 @@ class MemoryGame {
             "class": "container-card"
         });
 
-        let list = this.listImagesCard()[0];
-
-        for( let item in list) {
-            this.contentFrontBackCard = new Element("div", {
-                "class": "contentCard",
-                "events": {
-                    "click": (ev) => {
-                        ev.target.getParent().addClass("active");
+        for(let a = 1; a <=2; a++){
+            this.shuffleCards(this.cardsImage).each( (item, i) => {
+                this.contentFrontBackCard = new Element("div", {
+                    "class": "contentCard",
+                    "events": {
+                        "click": (ev) => {
+                            this.flipCard(ev);
+                            this.isValidOptions(ev)
+                        }
                     }
-                }
-            }).adopt(
-                new Element('div', {
-                    "class": "front",
-                    "id": item
-                }),
+                }).adopt(
+                    new Element('div', {
+                        "class": "front",
+                        "id": i
+                    }),
 
-                new Element('div', {
-                    "class": "back",
-                    "data-id": item,
-                    "styles": {
-                        "background": "url('"+list[item]+"')"
-                    }
-                })
-            ).inject(this.card)
+                    new Element('div', {
+                        "class": "back",
+                        "data-id": i,
+                        "styles": {
+                            "background": "url('"+item+"') no-repeat center center"
+                        }
+                    })
+                ).inject(this.card)
+            });
+
+            this.insertCard(this.card);
         }
-
-        return this.card;
     }
 
-    insertCard() {
-        $("receive-card").adopt(this.createCardElement())
+    insertCard(el) {
+        $("receive-card").adopt(el)
     }
 }
