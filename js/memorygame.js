@@ -16,30 +16,31 @@ class MemoryGame {
         this.listImagesCard();
         this.createCardElement();
         this.insertCard();
+        this.shuffleCards(this.cardsImage)
     }
 
     listImagesCard() {
         this.cardsImage = [
-            "images/4.png",
-            "images/40.png",
-            "images/10.png",
-            "images/1.png",
-            "images/4.png",
-            "images/3.png",
-            "images/32.png",
-            "images/51.png",
-            "images/8.png",
-            "images/33.png",
-            "images/53.png",
-            "images/35.png",
-            "images/20.png",
-            "images/50.png",
-            "images/46.png",
-            "images/47.png",
-            "images/29.png",
-            "images/43.png",
-            "images/5.png",
-            "images/52.png"
+            {"id": 1, "name": "images/4.png"},
+            {"id": 2, "name": "images/40.png"},
+            {"id": 3, "name": "images/10.png"},
+            {"id": 4, "name": "images/1.png"},
+            {"id": 5, "name": "images/4.png"},
+            {"id": 6, "name": "images/3.png"},
+            {"id": 7, "name": "images/32.png"},
+            {"id": 8, "name": "images/51.png"},
+            {"id": 9, "name": "images/8.png"},
+            {"id": 10, "name": "images/33.png"},
+            {"id": 11, "name": "images/53.png"},
+            {"id": 12, "name": "images/35.png"},
+            {"id": 13, "name": "images/20.png"},
+            {"id": 14, "name": "images/50.png"},
+            {"id": 15, "name": "images/46.png"},
+            {"id": 16, "name": "images/47.png"},
+            {"id": 17, "name": "images/29.png"},
+            {"id": 18, "name": "images/43.png"},
+            {"id": 19, "name": "images/5.png"},
+            {"id": 20, "name": "images/52.png"}
         ];
     }
 
@@ -77,27 +78,30 @@ class MemoryGame {
             "class": "container-card"
         });
 
+        console.log(this.cardsImage[1], '123')
+
         for(let a = 1; a <=2; a++){
             this.shuffleCards(this.cardsImage).each( (item, i) => {
+                console.log(item, i)
                 this.contentFrontBackCard = new Element("div", {
                     "class": "contentCard",
+                    "data-id": item.id,
+                    "data-select": a,
                     "events": {
                         "click": (ev) => {
                             this.flipCard(ev);
-                            this.isValidOptions(ev)
+                            this.isValidOptions()
                         }
                     }
                 }).adopt(
                     new Element('div', {
-                        "class": "front",
-                        "id": i
+                        "class": "front"
                     }),
 
                     new Element('div', {
                         "class": "back",
-                        "data-id": i,
                         "styles": {
-                            "background": "url('"+item+"') no-repeat center center"
+                            "background": "url('"+item.name+"') no-repeat center center"
                         }
                     })
                 ).inject(this.card)
