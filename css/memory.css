@@ -47,16 +47,27 @@ body {
     display: none;
 }
 
+.container-card .container-card.unFlip .front {
+    display: none;
+}
+
+.container-card .container-card.unFlip {
+    transform: rotateY(-180deg);
+}
+
+.container-card .container-card.unFlip .back {
+    display: block;
+    background: #ffffff;
+}
+
 .container-card .contentCard.flip .front {
     transform: rotateY(180deg);
 }
 
-.container-card .contentCard.active .front {
-    z-index: -1;
-    background: #ffffff;
+.container-card > div.active .back {
+    display: block;
 }
 
-.container-card .contentCard.active .back {
-    z-index: 1;
-    display: block;
+.container-card > div.unFlip .back {
+    display: none;
 }

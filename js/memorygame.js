@@ -15,7 +15,7 @@ class MemoryGame {
     constructor() {
         this.listImagesCard();
         this.createCardElement();
-        this.shuffleCards(this.cardsImage)
+        MemoryGame.shuffleCards(this.cardsImage)
     }
 
     listImagesCard() {
@@ -44,8 +44,7 @@ class MemoryGame {
     }
 
 
-    shuffleCards(array) {
-
+    static shuffleCards(array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
 
         while (0 !== currentIndex) {
@@ -62,14 +61,27 @@ class MemoryGame {
 
     flipCard(ev) {
         ev.target.getParent().addClass("flip");
-        setTimeout( () => {
+         setTimeout( () => {
             ev.target.getParent().addClass("active");
-        }, 250);
+        }, 1000);
 
     }
 
-    isValidOptions(ev) {
-        console.log(ev.target.closest(".contentCard"));
+    isValidOptions(answers) {
+        let card1 = answers[0].closest(".contentCard").get("data-img");
+        let card2 = answers[1].closest(".contentCard").get("data-img");
+
+        if(card1 === card2) {
+            answers.each( (el) => {
+                el.closest(".contentCard").closest(".contentCard").hide();
+            });
+        } else {
+            answers.each( (el) => {
+                $$(".contentCard").removeClass("active");
+                el.closest(".contentCard").addClass("unFlip").removeClass("flip");
+            })
+        }
+        console.log(card1, card2)
     }
 
     createCardElement() {
@@ -78,20 +90,27 @@ class MemoryGame {
         });
 
         this.sortDivs = [];
-        this.count = 1;
+        this.count = 0;
         for(let a = 1; a <= 2; a++){
-            this.shuffleCards(this.cardsImage).each( (item, i) => {
+            MemoryGame.shuffleCards(this.cardsImage).each( (item, i) => {
 
+                this.answer = [];
                 this.contentFrontBackCard = new Element("div", {
                     "class": "contentCard",
+                    "data-img": item.name,
                     "events": {
                         "click": (ev) => {
                             this.flipCard(ev);
-                            if(this.count > 1) {
-                                this.count = 1;
-                                this.isValidOptions()
-                            }
-                            ev.target.closest(".contentCard").addClass("item-"+this.count++);
+                            setTimeout( () => {
+                                this.answer.push(ev.target);
+                                if(this.count === 1) {
+                                    this.isValidOptions(this.answer);
+                                    this.answer = [];
+                                    this.count = 0;
+                                } else {
+                                    this.count++;
+                                }
+                            }, 3000)
                         }
                     }
                 }).adopt(
