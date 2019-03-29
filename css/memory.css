@@ -40,7 +40,7 @@ body {
 }
 
 .container-card > div .front {
-    background: url("../images/backgroundCard.png") no-repeat;
+    background: url("../images/backgroundCard.png") no-repeat #ffffff;
 }
 
 .container-card > div .back {
@@ -57,7 +57,6 @@ body {
 
 .container-card .container-card.unFlip .back {
     display: block;
-    background: #ffffff;
 }
 
 .container-card .contentCard.flip .front {
