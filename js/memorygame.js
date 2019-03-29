@@ -15,7 +15,6 @@ class MemoryGame {
     constructor() {
         this.listImagesCard();
         this.createCardElement();
-        this.insertCard();
         this.shuffleCards(this.cardsImage)
     }
 
@@ -70,7 +69,7 @@ class MemoryGame {
     }
 
     isValidOptions(ev) {
-        console.log(ev);
+        console.log(ev.target.closest(".contentCard"));
     }
 
     createCardElement() {
@@ -78,19 +77,21 @@ class MemoryGame {
             "class": "container-card"
         });
 
-        console.log(this.cardsImage[1], '123')
-
-        for(let a = 1; a <=2; a++){
+        this.sortDivs = [];
+        this.count = 1;
+        for(let a = 1; a <= 2; a++){
             this.shuffleCards(this.cardsImage).each( (item, i) => {
-                console.log(item, i)
+
                 this.contentFrontBackCard = new Element("div", {
                     "class": "contentCard",
-                    "data-id": item.id,
-                    "data-select": a,
                     "events": {
                         "click": (ev) => {
                             this.flipCard(ev);
-                            this.isValidOptions()
+                            if(this.count > 1) {
+                                this.count = 1;
+                                this.isValidOptions()
+                            }
+                            ev.target.closest(".contentCard").addClass("item-"+this.count++);
                         }
                     }
                 }).adopt(
@@ -104,14 +105,22 @@ class MemoryGame {
                             "background": "url('"+item.name+"') no-repeat center center"
                         }
                     })
-                ).inject(this.card)
+                );
+                this.sortDivs.push(this.contentFrontBackCard);
             });
-
-            this.insertCard(this.card);
         }
+        this.populateCard(this.sortDivs.sort());
     }
 
-    insertCard(el) {
+    populateCard(cards) {
+        cards.each( (card, i) => {
+            card.inject(this.card);
+        });
+
+        MemoryGame.insertCard(this.card)
+    }
+
+    static insertCard(el) {
         $("receive-card").adopt(el)
     }
 }
